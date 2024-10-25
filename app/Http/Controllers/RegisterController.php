@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
-use Illuminate\Support\Js;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
     public function register(Request $request): JsonResponse
     {
-
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
@@ -32,20 +28,32 @@ class RegisterController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('MyApp')->accessToken;
-        $success['name'] =  $user->name;
-        return response()->json($success, 'user create succesfully');
+        $data['token'] =  $user->createToken('MyApp')->accessToken;
+        $data['name'] =  $user->name;
+
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'data' => $data,
+            ]
+        );
     }
 
 
     public function login(Request $request): JsonResponse
     {
-        if (FacadesAuth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('MyApp')->accessToken;
-            $success['name'] =  $user->name;
+            $data['token'] =  $user->createToken('MyApp')->accessToken;
+            $data['name'] =  $user->name;
 
-            return response()->json($success, 'bien');
+            return response()->json(
+                [
+                    'status' => 'success',
+                    'data' => $data,
+                ]
+            );
         } else {
 
             return response()->json([
