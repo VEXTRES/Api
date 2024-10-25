@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FatSecretController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,3 +22,6 @@ Route::prefix('fat-secret')->group(function () {
     Route::get('recipes', [FatSecretController::class, 'recipes']);
     Route::get('foods', [FatSecretController::class, 'foods']);
 });
+
+
+
