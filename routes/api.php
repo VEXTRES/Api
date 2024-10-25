@@ -11,5 +11,5 @@ Route::middleware('client')->group(function () {
     Route::resource('users', UserController::class);
 });
 
-Route::get('/register', [RegisterController::class, 'register']);
-Route::get('/login', [RegisterController::class, 'login']);
+Route::post('register', [RegisterController::class, 'register']);
+Route::post('login', [RegisterController::class, 'login']);

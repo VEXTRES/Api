@@ -12,18 +12,21 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request):JsonResponse{
+    public function register(Request $request): JsonResponse
+    {
+
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>'error',
-                'message'=>$validator->errors()
-            ],404);
+                'status' => 'error',
+                'message' => $validator->errors()
+            ], 404);
         }
 
         $input = $request->all();
@@ -31,26 +34,24 @@ class RegisterController extends Controller
         $user = User::create($input);
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
-        return response()->json($success,'user create succesfully');
+        return response()->json($success, 'user create succesfully');
     }
 
 
     public function login(Request $request): JsonResponse
     {
-        if(FacadesAuth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if (FacadesAuth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('MyApp')-> accessToken;
+            $success['token'] =  $user->createToken('MyApp')->accessToken;
             $success['name'] =  $user->name;
 
-            return response()->json($success,'bien');
-
-        }
-        else{
+            return response()->json($success, 'bien');
+        } else {
 
             return response()->json([
-                'status'=>'error',
-                'message'=>'Unauthorised'
-            ],404);
+                'status' => 'error',
+                'message' => 'Unauthorised'
+            ], 404);
         }
     }
 }
