@@ -141,7 +141,7 @@ return [
                         'oneTypo' => 2,
                         'twoTypos' => 5
                     ]
-                ],
+                ],
             ],
         ],
     ],
