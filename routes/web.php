@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\FatSecretController;
 use App\Http\Controllers\RegisterController;
+use App\Livewire\UserController as LivewireUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,5 +25,6 @@ Route::prefix('fat-secret')->group(function () {
     Route::get('foods', [FatSecretController::class, 'foods']);
 });
 
+Route::get('index', [LivewireUserController::class, 'index']);
 
 
