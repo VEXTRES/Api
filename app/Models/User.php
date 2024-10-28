@@ -9,11 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-
+    use Searchable;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
@@ -64,4 +65,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function toSearchableArray()
+{
+    return [
+        'id' => (int) $this->id,
+        'name' => $this->name,
+        'email' => $this->email,
+    ];
+}
 }
