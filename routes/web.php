@@ -25,6 +25,4 @@ Route::prefix('fat-secret')->group(function () {
     Route::get('foods', [FatSecretController::class, 'foods']);
 });
 
-Route::get('index', [LivewireUserController::class, 'index']);
-
-
+Route::get('users', LivewireUserController::class);
