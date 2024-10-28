@@ -62,4 +62,38 @@ class RegisterController extends Controller
             ], 404);
         }
     }
+
+    public function update(Request $request, string $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found.'
+            ], 404);
+        }
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User updated successfully.',
+            'user' => $user
+        ]);
+    }
+
+    public function destroy(string $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User deleted successfully.',
+        ]);
+    }
+
 }
