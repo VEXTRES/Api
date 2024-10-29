@@ -7,7 +7,9 @@ use Livewire\Component;
 
 class UserController extends Component
 {
+
     public $search;
+
 
     public function render()
     {
