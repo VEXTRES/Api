@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Scout\Searchable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -71,9 +72,17 @@ class User extends Authenticatable
     public function toSearchableArray()
 {
     return [
+
         'id' => (int) $this->id,
         'name' => $this->name,
         'email' => $this->email,
+        'roles' => $this->getRoleNames()->toArray(),
     ];
 }
+
+// public function roles()
+// {
+//     return $this->belongsToMany(Role::class);
+// }
+
 }
