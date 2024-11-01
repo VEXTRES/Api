@@ -76,7 +76,8 @@ class User extends Authenticatable
         'id' => (int) $this->id,
         'name' => $this->name,
         'email' => $this->email,
-        'roles' => $this->getRoleNames()->toArray(),
+        'role' => $this->getRoleNames()->first(),
+        // 'role' => $this->getRoleNames()->array(),
     ];
 }
 

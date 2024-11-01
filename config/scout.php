@@ -135,13 +135,14 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             'users' => [
-                'filterableAttributes'=> ['id', 'name', 'email'],
+                'filterableAttributes'=> ['id', 'name', 'email','role'],
                 'typoTolerance' => [
                     'minWordSizeForTypos' => [
                         'oneTypo' => 2,
                         'twoTypos' => 5
                     ]
                 ],
+                'sortableAttributes' => ['name'],
             ],
         ],
     ],

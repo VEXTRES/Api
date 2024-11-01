@@ -11,8 +11,8 @@
         <label for="mainSelect" class="text-white">Filtro:</label>
     <select wire:model.live="role">
         <option value="">Seleccione</option>
-        @foreach ($roles as $rol)
-            <option key="{{$rol->id}}" value="{{$rol->name}}">{{$rol->name}}</option>
+        @foreach ($roles as $key => $rol)
+            <option key="{{$key}}" value="{{$rol}}">{{$rol}}</option>
         @endforeach
     </select>
     </div>
@@ -37,6 +37,9 @@
                 <th scope="col" class="px-6 py-3">
                     Roles
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    Correo
+                </th>
 
             </tr>
         </thead>
@@ -55,7 +58,10 @@
                     {{ $user->email }}
                 </td>
                 <td class="px-6 py-4">
-                    {{ implode(', ', $user->getRoleNames()->toArray()) }} <!-- Mostrar roles -->
+                    {{ $user->getRoleNames()->first() }} <!-- Mostrar roles -->
+                </td>
+                <td class="px-6 py-4" wire:click="enviarCorreo({{$user->id}})">
+                    <button class=" bg-gray-400 p-2 rounded-md text-white">Enviar Correo</button>
                 </td>
             </tr>
 
