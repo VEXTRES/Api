@@ -14,7 +14,9 @@ class UserController extends Component
     public $search;
     public $role;
     public $roles = [];
-    public $allUsersWithAllTheirRoles;
+    public $sortOrder='asc';
+    public $sortField='name';
+
 
     public function mount()
     {
@@ -29,6 +31,20 @@ class UserController extends Component
     public function enviarCorreo($id){
         $user = User::find($id);
         $user->notify(new UserNotification($user));
+        session()->flash('success', '¡Correo enviado con éxito!');
+        
+    }
+    public function setOrder($field)
+    {
+        $this->sortField=$field;
+
+        if($this->sortOrder == null){
+            $this->sortOrder = 'asc';
+        }else if($this->sortOrder == 'asc'){
+            $this->sortOrder = 'desc';
+        }else if($this->sortOrder == 'desc'){
+            $this->sortOrder = null;
+        }
     }
 
     public function render(){
@@ -38,13 +54,22 @@ class UserController extends Component
 
             if ($this->role) {
                 $options['filter'][] = 'role = "' . $this->role . '"';
-                $options['filter'] = 'edad = "' . $this->role . '"';
             }
 
-            $options['sort'] = ['name:asc'];
+            if($this->sortOrder!=null){
+                $options['sort'] = [$this->sortField.':'.$this->sortOrder];
+            }
 
             return $meilisearch->search($query, $options);
         })->paginate(10);
+
+   return view('livewire.user-controller', [
+       'users' => $users,
+   ]);
+    }
+}
+
+
 
 //    // Inicializar la consulta base
 //
@@ -81,9 +106,3 @@ class UserController extends Component
 //        // Si no hay término de búsqueda, paginar directamente la consulta
 //        $users = $query->orderBy('id')->paginate(10); // Asegúrate de ordenar por ID al paginar
 //    }
-
-   return view('livewire.user-controller', [
-       'users' => $users,
-   ]);
-    }
-}

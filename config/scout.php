@@ -142,7 +142,7 @@ return [
                         'twoTypos' => 5
                     ]
                 ],
-                'sortableAttributes' => ['name'],
+                'sortableAttributes' => ['name','email','id'],
             ],
         ],
     ],
