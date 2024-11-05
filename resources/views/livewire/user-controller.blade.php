@@ -47,12 +47,24 @@
                         </button>
 
                     </th>
-                    <th class="px-6 py-3" scope="col">
+                    <th class="cursor-pointer px-6 py-3" scope="col" wire:click="setOrder('email')">
                         <span>Email </span>
+
+                        {{ $sortField == 'email' ? ($sortOrder == 'asc' ? '▲' : ($sortOrder == 'desc' ? '▼' : '')) : '' }}
 
                     </th>
                     <th class="px-6 py-3" scope="col">
                         Roles
+                        <button class="rounded-sm bg-gray-200 p-1 text-sm text-black"
+                            wire:click="setOrder(field='role')">
+                            @if ($sortOrder == 'asc')
+                                <p>Asc</p>
+                            @elseif($sortOrder == 'desc')
+                                <p>Desc</p>
+                            @elseif($sortOrder == null)
+                                <p>No ordenar</p>
+                            @endif
+                        </button>
                     </th>
                     <th class="px-6 py-3" scope="col">
                         Correo

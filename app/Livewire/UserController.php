@@ -14,40 +14,39 @@ class UserController extends Component
     public $search;
     public $role;
     public $roles = [];
-    public $sortOrder='asc';
-    public $sortField='name';
+    public $sortOrder = 'asc';
+    public $sortField = 'name';
 
 
     public function mount()
     {
         // Obtener todos los nombres de roles y almacenarlos en la propiedad $roles
         $this->roles = Role::orderBy('name')->pluck('name', 'id');
-
-
     }
-        // $users = User::when($this->search,function ($query){
-        //     $query->where('name','ilike','%'.$this->search.'%');
-        // })->paginate(10);
-    public function enviarCorreo($id){
+    // $users = User::when($this->search,function ($query){
+    //     $query->where('name','ilike','%'.$this->search.'%');
+    // })->paginate(10);
+    public function enviarCorreo($id)
+    {
         $user = User::find($id);
         $user->notify(new UserNotification($user));
         session()->flash('success', '¡Correo enviado con éxito!');
-        
     }
     public function setOrder($field)
     {
-        $this->sortField=$field;
+        $this->sortField = $field;
 
-        if($this->sortOrder == null){
+        if ($this->sortOrder == null) {
             $this->sortOrder = 'asc';
-        }else if($this->sortOrder == 'asc'){
+        } else if ($this->sortOrder == 'asc') {
             $this->sortOrder = 'desc';
-        }else if($this->sortOrder == 'desc'){
+        } else if ($this->sortOrder == 'desc') {
             $this->sortOrder = null;
         }
     }
 
-    public function render(){
+    public function render()
+    {
 
         // Log::info($this->roles);
         $users = User::search($this->search, function ($meilisearch, $query, $options) {
@@ -56,16 +55,16 @@ class UserController extends Component
                 $options['filter'][] = 'role = "' . $this->role . '"';
             }
 
-            if($this->sortOrder!=null){
-                $options['sort'] = [$this->sortField.':'.$this->sortOrder];
+            if ($this->sortOrder != null) {
+                $options['sort'] = [$this->sortField . ':' . $this->sortOrder];
             }
 
             return $meilisearch->search($query, $options);
         })->paginate(10);
 
-   return view('livewire.user-controller', [
-       'users' => $users,
-   ]);
+        return view('livewire.user-controller', [
+            'users' => $users,
+        ]);
     }
 }
 
