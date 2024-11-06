@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
 class UserNotification extends Notification
@@ -18,7 +19,7 @@ class UserNotification extends Notification
      */
     public function __construct($user)
     {
-        $this->user=$user;
+        $this->user = $user;
     }
 
     /**
@@ -36,16 +37,23 @@ class UserNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $filePath = storage_path('app/public/saves/users.xlsx');
+        $filePath = null;
+
+        if (Storage::disk('public')->exists('documentos/users.xlsx')) {
+            $filePath = Storage::disk('public')->path('documentos/users.xlsx');
+        }
+
+
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!')
-                    ->line(new HtmlString('This email may contain <strong>Hola '.$this->user->name.'</strong>'))
-                    ->attach($filePath, [
-                        'as' => 'users.xlsx', // Nombre del archivo que aparecerá en el correo
-                        'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Tipo MIME de archivo Excel
-                    ]);
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!')
+            ->line(new HtmlString('This email may contain <strong>Hola ' . $this->user->name . '</strong>'))
+            ->attach($filePath, [
+                'as' => 'users.xlsx', // Nombre del archivo que aparecerá en el correo
+                'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Tipo MIME de archivo Excel
+            ]);
     }
 
     /**

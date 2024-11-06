@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
@@ -50,10 +51,10 @@ class UserController extends Component
     public function export()
     {
         // $path=storage_path('app/public/saves/users.xlsx');
-        // Excel::store(new UsersExport, $path, 'local');
+        Excel::store(new UsersExport, 'documentos/users.xlsx', 'public');
         // return session()->flash('success', 'Excel Guardado');
 
-        return Excel::download(new UsersExport, 'users.xlsx');
+        return Storage::disk('public')->download('documentos/users.xlsx');
         session()->flash('success', 'Excel Guardado');
     }
     public function render()
