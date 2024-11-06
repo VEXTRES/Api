@@ -36,11 +36,16 @@ class UserNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $filePath = storage_path('app/public/saves/users.xlsx');
         return (new MailMessage)
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!')
-                    ->line(new HtmlString('This email may contain <strong>Hola '.$this->user->name.'</strong>'));
+                    ->line(new HtmlString('This email may contain <strong>Hola '.$this->user->name.'</strong>'))
+                    ->attach($filePath, [
+                        'as' => 'users.xlsx', // Nombre del archivo que aparecerá en el correo
+                        'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Tipo MIME de archivo Excel
+                    ]);
     }
 
     /**

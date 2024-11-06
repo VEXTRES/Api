@@ -1,5 +1,5 @@
 <div>
-    <div class="flex items-center pt-3">
+    <div class="flex pt-3 w-full justify-between">
         <div class="flex items-center space-x-6">
             <p class="text-white">Search</p>
             <input class="my-5" type="text" wire:model.live="search">
@@ -13,6 +13,9 @@
                     <option value="{{ $rol }}" key="{{ $key }}">{{ $rol }}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="flex ml-auto mr-3">
+            <button wire:click="export" class="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded">Exportar</button>
         </div>
 
 

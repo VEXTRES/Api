@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Log;
@@ -45,6 +47,15 @@ class UserController extends Component
         }
     }
 
+    public function export()
+    {
+        // $path=storage_path('app/public/saves/users.xlsx');
+        // Excel::store(new UsersExport, $path, 'local');
+        // return session()->flash('success', 'Excel Guardado');
+
+        return Excel::download(new UsersExport, 'users.xlsx');
+        session()->flash('success', 'Excel Guardado');
+    }
     public function render()
     {
 
@@ -67,8 +78,6 @@ class UserController extends Component
         ]);
     }
 }
-
-
 
 //    // Inicializar la consulta base
 //
