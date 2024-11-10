@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
-use App\Notifications\UserNotification;
+use App\Notifications\UserNotificationExcel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class SendEmails extends Command
+class SendEmailExcel extends Command
 {
     /**
      * The name and signature of the console command.
@@ -32,7 +32,7 @@ class SendEmails extends Command
 
         $user = User::find($usuario);
 
-        $user->notify(new UserNotification($user));
+        $user->notify(new UserNotificationExcel($user));
         $this->info('Correo enviado');
     }
 }

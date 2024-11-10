@@ -5,8 +5,8 @@ namespace App\Livewire;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
-use App\Notifications\UserNotification;
-use Illuminate\Support\Facades\Log;
+use App\Notifications\UserNotificationExcel;
+use App\Notifications\UserNotificationPdf;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
@@ -32,7 +32,8 @@ class UserController extends Component
     public function enviarCorreo($id)
     {
         $user = User::find($id);
-        $user->notify(new UserNotification($user));
+        $user->notify(new UserNotificationExcel($user));
+        $user->notify(new UserNotificationPdf($user));
         session()->flash('success', '¡Correo enviado con éxito!');
     }
     public function setOrder($field)
@@ -48,15 +49,23 @@ class UserController extends Component
         }
     }
 
-    public function export()
+    public function descargarArchivo($seleccionado)
     {
-        // $path=storage_path('app/public/saves/users.xlsx');
-        Excel::store(new UsersExport, 'documentos/users.xlsx', 'public');
-        // return session()->flash('success', 'Excel Guardado');
+        if($seleccionado==1){
+            Excel::store(new UsersExport, 'documentos/users.xlsx', 'public');
 
-        return Storage::disk('public')->download('documentos/users.xlsx');
-        session()->flash('success', 'Excel Guardado');
+            return Storage::disk('public')->download('documentos/users.xlsx');
+            session()->flash('success', 'Excel Guardado');
+
+        }elseif($seleccionado==2){
+
+            Excel::store(new UsersExport,'documentos/users.pdf', 'public' , \Maatwebsite\Excel\Excel::DOMPDF);
+            return Storage::disk('public')->download('documentos/users.pdf');
+
+            session()->flash('success', 'PDF Guardado');
+        }
     }
+
     public function render()
     {
 

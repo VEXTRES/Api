@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
-class UserNotification extends Notification
+class UserNotificationExcel extends Notification
 {
     use Queueable;
 
@@ -37,24 +37,33 @@ class UserNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $filePath = null;
-
-        if (Storage::disk('public')->exists('documentos/users.xlsx')) {
-            $filePath = Storage::disk('public')->path('documentos/users.xlsx');
-        }
-
-
-
-        return (new MailMessage)
+        $mailMessage = (new MailMessage)
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!')
-            ->line(new HtmlString('This email may contain <strong>Hola ' . $this->user->name . '</strong>'))
-            ->attach($filePath, [
-                'as' => 'users.xlsx', // Nombre del archivo que aparecerá en el correo
-                'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Tipo MIME de archivo Excel
+            ->line(new HtmlString('This email may contain <strong>Hola ' . $this->user->name . '</strong>'));
+
+        // Verificar y adjuntar el primer archivo
+        if (Storage::disk('public')->exists('documentos/users.xlsx')) {
+            $filePath = Storage::disk('public')->path('documentos/users.xlsx');
+            $mailMessage->attach($filePath, [
+                'as' => 'users.xlsx',
+                'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]);
+        }
+
+        // Verificar y adjuntar el segundo archivo
+        // if (Storage::disk('public')->exists('documentos/users.pdf')) {
+        //     $filePath = Storage::disk('public')->path('documentos/users.pdf');
+        //     $mailMessage->attach($filePath, [
+        //         'as' => 'users.pdf',
+        //         'mime' => 'application/pdf',
+        //     ]);
+        // }
+
+        return $mailMessage;
     }
+
 
     /**
      * Get the array representation of the notification.
