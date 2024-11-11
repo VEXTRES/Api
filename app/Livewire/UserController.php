@@ -10,6 +10,7 @@ use App\Notifications\UserNotificationPdf;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Component
 {
@@ -51,15 +52,22 @@ class UserController extends Component
 
     public function descargarArchivo($seleccionado)
     {
-        if($seleccionado==1){
+        if ($seleccionado == 1) {
             Excel::store(new UsersExport, 'documentos/users.xlsx', 'public');
 
             return Storage::disk('public')->download('documentos/users.xlsx');
             session()->flash('success', 'Excel Guardado');
+        } elseif ($seleccionado == 2) {
 
-        }elseif($seleccionado==2){
+            /* $data = User::limit('100')->get();
+            $pdf = Pdf::loadView('pdf.users', compact('data'));
+            //return $pdf->download('users.pdf');
 
-            Excel::store(new UsersExport,'documentos/users.pdf', 'public' , \Maatwebsite\Excel\Excel::DOMPDF);
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->stream();
+            }, 'name.pdf'); */
+
+            Excel::store(new UsersExport, 'documentos/users.pdf', 'public', \Maatwebsite\Excel\Excel::DOMPDF);
             return Storage::disk('public')->download('documentos/users.pdf');
 
             session()->flash('success', 'PDF Guardado');
