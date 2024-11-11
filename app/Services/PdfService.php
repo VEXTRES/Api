@@ -22,9 +22,14 @@ class PdfService
      * 
      * @var string
      */
-    protected $binary = config('services.chrome.path');
+    protected $binary;
 
     protected $path;
+
+    public function __construct()
+    {
+        $this->binary = config('services.chrome.path');
+    }
 
 
     /**
