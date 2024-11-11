@@ -40,5 +40,8 @@ return [
         'client_id' => env('FAT_SECRET_CLIENT_ID'),
         'client_secret' => env('FAT_SECRET_CLIENT_SECRET'),
     ],
+    'chrome' => [
+        'path' => env('CHROME_PATH'),
+    ],
 
 ];

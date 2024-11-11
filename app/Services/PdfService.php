@@ -22,7 +22,7 @@ class PdfService
      * 
      * @var string
      */
-    protected $binary = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome';
+    protected $binary = config('services.chrome.path');
 
     protected $path;
 
