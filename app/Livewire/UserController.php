@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use App\Notifications\UserNotificationExcel;
 use App\Notifications\UserNotificationPdf;
+use App\Services\PdfService;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
@@ -20,10 +21,15 @@ class UserController extends Component
     public $roles = [];
     public $sortOrder = 'asc';
     public $sortField = 'name';
+    public $pdf;
 
 
     public function mount()
     {
+        $this->pdf = PdfService::class;
+
+
+
         // Obtener todos los nombres de roles y almacenarlos en la propiedad $roles
         $this->roles = Role::orderBy('name')->pluck('name', 'id');
     }
