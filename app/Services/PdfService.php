@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Invoice;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\View;
+use Exception;
 use Illuminate\Support\Str;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Log;
 
 class PdfService
 {
@@ -24,7 +22,10 @@ class PdfService
      * 
      * @var string
      */
-    protected $binary = '/Applications/Chromium.app/Contents/MacOS/Chromium';
+    protected $binary = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome';
+
+    protected $path;
+
 
     /**
      * Render the PDF.
@@ -32,23 +33,42 @@ class PdfService
      * @param  \App\Invoice  $invoice
      * @return string
      */
-    public function render(User $user)
+    public function render(String $view)
     {
-        $view = View::make('pdf.users', compact('user'))->render();
 
-        $process = new Process(sprintf(
+        $viewpath = tempnam(sys_get_temp_dir(), Str::random()) . '.html';
+        file_put_contents($viewpath, $view);
+
+
+        $this->path = tempnam(sys_get_temp_dir(), Str::random());
+
+        Process::run(sprintf(
             $this->command,
-            escapeshellarg($this->binary),
-            escapeshellarg($path = tempnam(sys_get_temp_dir(), Str::random())),
-            escapeshellarg('data:text/html,' . rawurlencode($view))
+            $this->binary,
+            escapeshellarg($this->path),
+            $viewpath,
         ));
+    }
 
+    public function download($filename)
+    {
         try {
-            $process->mustRun();
+            return response()->download($this->path, $filename);
+        } catch (Exception $exception) {
+            Log::error('Error al descargar el PDF: ', $exception);
+        }
+    }
 
-            return File::get($path);
-        } catch (ProcessFailedException $exception) {
-            //
+    public function stream($filename)
+    {
+        try {
+            $headers = [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => ('inline') . "; filename=" . $filename
+            ];
+            return response()->file($this->path, $headers);
+        } catch (Exception $exception) {
+            Log::error('Error al mostrar el PDF: ', $exception);
         }
     }
 }

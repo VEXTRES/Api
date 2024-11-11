@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\FatSecretController;
 use App\Http\Controllers\RegisterController;
 use App\Livewire\UserController as LivewireUserController;
@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('pdf', [UserController::class, 'index']);
 
 Route::middleware([
     'auth:sanctum',

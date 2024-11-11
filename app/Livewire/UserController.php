@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\View;
 
 class UserController extends Component
 {
@@ -26,10 +27,6 @@ class UserController extends Component
 
     public function mount()
     {
-        $this->pdf = PdfService::class;
-
-
-
         // Obtener todos los nombres de roles y almacenarlos en la propiedad $roles
         $this->roles = Role::orderBy('name')->pluck('name', 'id');
     }
@@ -65,6 +62,7 @@ class UserController extends Component
             session()->flash('success', 'Excel Guardado');
         } elseif ($seleccionado == 2) {
 
+            //DOMPDF SOLO
             /* $data = User::limit('100')->get();
             $pdf = Pdf::loadView('pdf.users', compact('data'));
             //return $pdf->download('users.pdf');
@@ -73,6 +71,8 @@ class UserController extends Component
                 echo $pdf->stream();
             }, 'name.pdf'); */
 
+
+            //DOMPDF VIA EXCEL PACKAGE
             Excel::store(new UsersExport, 'documentos/users.pdf', 'public', \Maatwebsite\Excel\Excel::DOMPDF);
             return Storage::disk('public')->download('documentos/users.pdf');
 

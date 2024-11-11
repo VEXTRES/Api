@@ -1,5 +1,5 @@
 <div>
-    <div class="flex pt-3 w-full justify-between">
+    <div class="flex w-full justify-between pt-3">
         <div class="flex items-center space-x-6">
             <p class="text-white">Search</p>
             <input class="my-5" type="text" wire:model.live="search">
@@ -14,9 +14,13 @@
                 @endforeach
             </select>
         </div>
-        <div class="flex ml-auto mr-3 gap-2">
-            <button wire:click="descargarArchivo(1)" class="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded">Excel</button>
-            <button wire:click="descargarArchivo(2)" class="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded">PDF</button>
+        <div class="ml-auto mr-3 flex gap-2">
+            <button class="rounded bg-white px-4 py-2 font-bold text-black hover:bg-gray-200"
+                wire:click="descargarArchivo(1)">Excel</button>
+            <button class="rounded bg-white px-4 py-2 font-bold text-black hover:bg-gray-200"
+                wire:click="descargarArchivo(2)">PDF</button>
+            <a class="rounded bg-white px-4 py-2 font-bold text-black hover:bg-gray-200" href ="/pdf"
+                target="_blank">PDF Chrome</a>
 
         </div>
 
