@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PdfService
 {
@@ -53,6 +55,7 @@ class PdfService
             escapeshellarg($this->path),
             $viewpath,
         ));
+        return $this->path;
     }
 
     public function download($filename)
@@ -74,6 +77,21 @@ class PdfService
             return response()->file($this->path, $headers);
         } catch (Exception $exception) {
             Log::error('Error al mostrar el PDF: ', $exception);
+        }
+    }
+    public function saveToStorage($filename)
+    {
+        try {
+            // Obtén el contenido del archivo PDF
+            $pdfContent = file_get_contents($this->path);
+
+            // Guarda el contenido en el almacenamiento de Laravel
+            Storage::disk('public')->put($filename, $pdfContent);
+
+            return true;
+        } catch (Exception $exception) {
+            Log::error('Error al guardar el PDF en el almacenamiento: ', $exception);
+            return false;
         }
     }
 }
