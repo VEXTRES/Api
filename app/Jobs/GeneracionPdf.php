@@ -26,7 +26,7 @@ class GeneracionPdf implements ShouldQueue
     public function handle(): void
     {
         $this->pdf = new PdfService();
-        $data = User::get();
+        $data = User::limit(10)->get();
         $view = View::make('pdf.users', compact('data'))->render();
         $pagina = $this->pdf->render($view);
         $this->pdf->saveToStorage('documentos/test.pdf');

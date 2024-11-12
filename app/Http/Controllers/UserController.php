@@ -19,15 +19,15 @@ class UserController extends Controller
 
     public function index()
     {
-        //$this->pdf = new PdfService();
+        /* //$this->pdf = new PdfService();
 
         $data = User::limit(10)->get();
         $view = View::make('pdf.users', compact('data'))->render();
 
         $this->pdf->render($view);
-        //return $this->pdf->download('test.pdf');
+        //return $this->pdf->download('test.pdf'); */
 
-        return $this->pdf->saveToStorage('test.pdf');
-        //GeneracionPdf::dispatch();
+        //return $this->pdf->saveToStorage('documentos/users.pdf');
+        GeneracionPdf::dispatch();
     }
 }
