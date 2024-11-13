@@ -29,7 +29,7 @@ class GeneracionPdf implements ShouldQueue
         $data = User::limit(10)->get();
         $view = View::make('pdf.users', compact('data'))->render();
         $pagina = $this->pdf->render($view);
-        $this->pdf->saveToStorage('documentos/test.pdf');
+        $this->pdf->saveToStorage('documentos/users.pdf');
         Log::info($pagina);
     }
 }
