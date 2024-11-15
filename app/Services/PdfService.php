@@ -14,14 +14,14 @@ class PdfService
 {
     /**
      * The command.
-     * 
+     *
      * @var string
      */
     protected $command = '%s --headless --disable-gpu --print-to-pdf=%s %s 2>&1';
 
     /**
      * The binary.
-     * 
+     *
      * @var string
      */
     protected $binary;
@@ -66,7 +66,7 @@ class PdfService
             Log::error('Error al descargar el PDF: ', $exception);
         }
     }
-
+        //para ver en vivo la pantalla del pdf
     public function stream($filename)
     {
         try {

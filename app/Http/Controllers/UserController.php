@@ -14,7 +14,7 @@ class UserController extends Controller
 
     public function __construct(PdfService $pdf)
     {
-        $this->pdf = $pdf;
+        // $this->pdf = $pdf;
     }
 
     public function index()
