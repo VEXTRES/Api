@@ -27,7 +27,7 @@ class UserController extends Controller
         $this->pdf->render($view);
         //return $this->pdf->download('test.pdf'); */
 
-        //return $this->pdf->saveToStorage('documentos/users.pdf');
+        //return $this->pdf->saveToStorage('documentos/users.pdf'); 
         GeneracionPdf::dispatch();
     }
 }
