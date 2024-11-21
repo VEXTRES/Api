@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Exports\UsersExport;
+use App\Jobs\EnviarEmail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use App\Notifications\UserNotificationExcel;
@@ -36,8 +37,9 @@ class UserController extends Component
     public function enviarCorreo($id)
     {
         $user = User::find($id);
-        $user->notify(new UserNotificationExcel($user));
-        $user->notify(new UserNotificationPdf($user));
+        // $user->notify(new UserNotificationExcel($user));
+        // $user->notify(new UserNotificationPdf($user));
+        EnviarEmail::dispatch($user)->onQueue('emails');
         session()->flash('success', '¡Correo enviado con éxito!');
     }
     public function setOrder($field)

@@ -11,25 +11,25 @@ use Illuminate\Support\Facades\View;
 
 class GeneracionPdf implements ShouldQueue
 {
-    use Queueable;
+        use Queueable;
 
-    /**
-     * Create a new job instance.
-     */
+        /**
+         * Create a new job instance.
+         */
 
-    private $pdf;
-    public function __construct() {}
+        private $pdf;
+        public function __construct() {}
 
-    /**
-     * Execute the job.
-     */
-    public function handle(): void
-    {
-        $this->pdf = new PdfService();
-        $data = User::limit(10)->get();
-        $view = View::make('pdf.users', compact('data'))->render();
-        $pagina = $this->pdf->render($view);
-        $this->pdf->saveToStorage('documentos/users.pdf');
-        Log::info($pagina);
-    }
+        /**
+         * Execute the job.
+         */
+        public function handle(): void
+        {
+                $this->pdf = new PdfService();
+                $data = User::limit(10)->get();
+                $view = View::make('pdf.users', compact('data'))->render();
+                $pagina = $this->pdf->render($view);
+                $this->pdf->saveToStorage('documentos/users.pdf');
+                Log::info($pagina);
+        }
 }
