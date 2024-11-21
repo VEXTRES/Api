@@ -63,7 +63,6 @@ class UserController extends Component
             return Storage::disk('public')->download('documentos/users.xlsx');
             session()->flash('success', 'Excel Guardado');
         } elseif ($seleccionado == 2) {
-
             //DOMPDF SOLO
             /* $data = User::limit('100')->get();
             $pdf = Pdf::loadView('pdf.users', compact('data'));
