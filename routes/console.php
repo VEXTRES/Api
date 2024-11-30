@@ -10,4 +10,4 @@ use Illuminate\Support\Facades\Schedule;
 
 $data = User::where('email', '=', 'uriel.ss@hotmail.com')->first();
 
-Schedule::command(SendEmailPdf::class, [$data->id])->fridays();
+Schedule::command(SendEmailPdf::class, [$data->id])->saturdays()->at('16:00');
