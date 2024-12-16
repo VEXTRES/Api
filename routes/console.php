@@ -8,6 +8,6 @@ use Illuminate\Support\Facades\Schedule;
 
 
 
-$data = User::where('email', '=', 'uriel.ss@hotmail.com')->firstOrFail();
+// $data = User::where('email', '=', 'uriel.ss@hotmail.com')->firstOrFail();
 
-Schedule::command(SendEmailPdf::class, [$data->id])->saturdays()->at('16:00');
+// Schedule::command(SendEmailPdf::class, [$data->id])->saturdays()->at('16:00');
